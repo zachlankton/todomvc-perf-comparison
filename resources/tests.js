@@ -263,7 +263,7 @@ Suites.push({
 Suites.push({
     name: 'Mithril',
     url: 'todomvc/mithril/index.html',
-    version: '0.1.0',
+    version: '0.1.19',
     prepare: function (runner, contentWindow, contentDocument) {
         return runner.waitForElement('#new-todo').then(function (element) {
             element.focus();

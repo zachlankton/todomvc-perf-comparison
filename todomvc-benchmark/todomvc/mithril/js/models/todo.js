@@ -1,18 +1,20 @@
-var app = app || {};
+var app = {};
 
-(function () {
-    'use strict';
+app.Todo = function(data) {
+	this.title = m.prop(data.title);
+	this.completed = m.prop(false);
+};
 
-    // Todo Model
-    app.Todo = function(data) {
-        this.title = m.prop(data.title);
-        this.completed = m.prop(false);
-    };
-    
-    // List of Todos
-    var list = [];
-    app.TodoList = function() {
-        return list;
-    };
+// List of Todos
+app.storageKey = "todos-mithril"
 
-})();
+app.TodoList = function() {
+	var tmp = window.localStorage.getItem(app.storageKey)
+	var list = tmp ? JSON.parse(tmp).map(function(data) { return new app.Todo(data) }) : [];
+	return list
+};
+
+app.TodoList.save = function(list) {
+	window.localStorage.setItem(app.storageKey, JSON.stringify(list))
+}
+

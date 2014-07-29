@@ -1,59 +1,62 @@
-var app = app || {};
+app.controller = function() {
 
-(function () {
-    'use strict';
+	this.list = new app.TodoList(); // Todo collection
+	this.title = m.prop('');		// Temp title placeholder
+	this.filter = m.prop(m.route.param('filter') || '');	   // TodoList filter
 
-    app.controller = function() {
+	// Add a Todo 
+	this.add = function(title) {
+		if (this.title()) {
+			this.list.push(new app.Todo({title: title()}));
+			this.title('');
+			app.TodoList.save(this.list)
+		}
+	};
 
-        this.list = new app.TodoList(); // Todo collection
-        this.title = m.prop('');        // Temp title placeholder
-        this.filter = m.prop(m.route.param('filter') || '');       // TodoList filter
+	//check whether a todo is visible
+	this.isVisible = function(todo) {
+		if (this.filter() == '')
+			return true;
+		if (this.filter() == 'active')
+			return !todo.completed();
+		if (this.filter() == 'completed')
+			return todo.completed();
+	}
+	
+	this.clearTitle = function() {
+		this.title('')
+	}
 
-        // Add a Todo 
-        this.add = function(title) {
-            if(this.title()) {
-                this.list.push(new app.Todo({title: title()}));
-                this.title('');
-            }
-        };
+	// Removing a Todo from the list
+	this.remove = function(key) {
+		this.list.splice(key, 1)
+		app.TodoList.save(this.list)
+	}
 
-        //check whether a todo is visible
-        this.isVisible = function(todo) {
-            if(this.filter() == '')
-                return true;
-            if (this.filter() == 'active')
-                return !todo.completed();
-            if (this.filter() == 'completed')
-                return todo.completed();
-        }
-        
-        this.clearTitle = function() {
-            this.title('')
-        }
+	// Remove all Todos where Completed == true
+	this.clearCompleted = function() {
+		for(var i = 0; i < this.list.length; i++) {
+			if(this.list[i].completed())
+				this.list.splice(i, 1)
+		}
+		app.TodoList.save(this.list)
+	}
 
-        // Removing a Todo from the list
-        this.remove = function(key) {
-            this.list.splice(key, 1)
-        }
+	// Total amount of Todos completed
+	this.amountCompleted = function() {
+		var amount = 0;
+		
+		for (var i = 0; i < this.list.length; i++)
+			if (this.list[i].completed())
+				amount++
 
-        // Remove all Todos where Completed == true
-        this.clearCompleted = function() {
-            for(var i = 0; i < this.list.length; i++) {
-                if(this.list[i].completed())
-                    this.list.splice(i, 1)
-            }
-        }
+		return amount
+	}
 
-        // Total amount of Todos completed
-        this.amountCompleted = function() {
-            var amount = 0;
-            
-            for(var i = 0; i < this.list.length; i++)
-                if(this.list[i].completed())
-                    amount++;
-
-            return amount;
-        }
-    };
-    
-})();
+	this.save = function(prop) {
+		return function(v) {
+			prop(v)
+			app.TodoList.save(this.list)
+		}.bind(this)
+	}.bind(this)
+};

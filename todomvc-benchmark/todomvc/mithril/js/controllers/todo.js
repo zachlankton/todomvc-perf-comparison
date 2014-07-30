@@ -1,62 +1,28 @@
 app.controller = function() {
 
-	this.list = new app.TodoList(); // Todo collection
-	this.title = m.prop('');		// Temp title placeholder
-	this.filter = m.prop(m.route.param('filter') || '');	   // TodoList filter
+	var list = new app.TodoList(); // Todo collection
+	var title = m.prop('');		// Temp title placeholder
+	var filter = m.route.param('filter') || '';	   // TodoList filter
 
 	// Add a Todo 
-	this.add = function(title) {
-		if (this.title()) {
-			this.list.push(new app.Todo({title: title()}));
-			this.title('');
-			app.TodoList.save(this.list)
+	var add = function() {
+		if (title()) {
+			list.add(new app.Todo({title: title()}));
+			title('');
 		}
 	};
 
 	//check whether a todo is visible
-	this.isVisible = function(todo) {
-		if (this.filter() == '')
+	var isVisible = function(todo) {
+		if (filter == '')
 			return true;
-		if (this.filter() == 'active')
-			return !todo.completed();
-		if (this.filter() == 'completed')
-			return todo.completed();
+		if (filter == 'active')
+			return !todo.completed;
+		if (filter == 'completed')
+			return todo.completed;
 	}
 	
-	this.clearTitle = function() {
-		this.title('')
-	}
-
-	// Removing a Todo from the list
-	this.remove = function(key) {
-		this.list.splice(key, 1)
-		app.TodoList.save(this.list)
-	}
-
-	// Remove all Todos where Completed == true
-	this.clearCompleted = function() {
-		for(var i = 0; i < this.list.length; i++) {
-			if(this.list[i].completed())
-				this.list.splice(i, 1)
-		}
-		app.TodoList.save(this.list)
-	}
-
-	// Total amount of Todos completed
-	this.amountCompleted = function() {
-		var amount = 0;
-		
-		for (var i = 0; i < this.list.length; i++)
-			if (this.list[i].completed())
-				amount++
-
-		return amount
-	}
-
-	this.save = function(prop) {
-		return function(v) {
-			prop(v)
-			app.TodoList.save(this.list)
-		}.bind(this)
-	}.bind(this)
+	var clearTitle = title.bind(this, '')
+	
+	return {list: list, title: title, filter: filter, add: add, isVisible: isVisible, clearTitle: clearTitle}
 };

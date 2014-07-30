@@ -1,13 +1,4 @@
-# mercury-perf
+# TodoMVC Benchmark
 
-mercury performance benchmarks
+Performance benchmarks for various TodoMVC implementations
 
-## Installation
-
-`npm install mercury-perf`
-
-## Contributors
-
- - Matt Esch
-
-## MIT Licenced

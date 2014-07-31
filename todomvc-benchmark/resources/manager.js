@@ -68,12 +68,12 @@ function startTest() {
 
     var runner = new BenchmarkRunner(Suites, {
         willRunTest: function (suite, test) {
-            test.anchor.classList.add('running');
+            if (!navigator.userAgent.match("MSIE 9.0")) test.anchor.classList.add('running');
         },
         didRunTest: function (suite, test) {
             var classList = test.anchor.classList;
-            classList.remove('running');
-            classList.add('ran');
+            if (!navigator.userAgent.match("MSIE 9.0")) classList.remove('running');
+            if (!navigator.userAgent.match("MSIE 9.0")) classList.add('ran');
         },
         didRunSuites: function (measuredValues) {
             var results = '';
@@ -101,7 +101,8 @@ function startTest() {
             timesRan++
             if (timesRan >= timesToRun) {
                 timesRan = 0
-                reportSlowest()
+                reportFastest()
+                shuffle(Suites);
             } else {
                 setTimeout(function () {
                     runButton.click()
@@ -128,7 +129,7 @@ function startTest() {
             callNextStep(currentState);
         }));
 
-    function reportSlowest () {
+    function reportFastest () {
         var results = {}
         runs.forEach(function (runData) {
             for (var key in runData) {
@@ -168,13 +169,26 @@ function drawChart(results) {
 	height: 400,
         legend: { position: "none" },
         backgroundColor: 'transparent',
-        hAxis: {title: title}
+        hAxis: {title: title},
+        min:0
     };
     var analysis = document.getElementById("analysis");
     analysis.style.display = 'block';
     var barchart = document.getElementById("barchart_values");
     var chart = new google.visualization.BarChart(barchart);
     chart.draw(view, options);
+}
+
+function shuffle ( ary ) {
+  var i = ary.length;
+  if ( i == 0 ) return false;
+  while ( --i ) {
+     var j = Math.floor( Math.random() * ( i + 1 ) );
+     var tempi = ary[i];
+     var tempj = ary[j];
+     ary[i] = tempj;
+     ary[j] = tempi;
+   }
 }
 
 window.addEventListener('load', startTest);

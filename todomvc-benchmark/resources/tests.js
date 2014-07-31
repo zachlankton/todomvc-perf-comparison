@@ -106,7 +106,7 @@ Suites.push({
         })
     ]
 });
-
+/*
 Suites.push({
     name: 'Knockout',
     url: 'todomvc/knockoutjs/index.html',
@@ -543,3 +543,4 @@ Suites.push({
         })
     ]
 });
+*/

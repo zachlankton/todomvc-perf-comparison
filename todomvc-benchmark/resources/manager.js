@@ -101,7 +101,7 @@ function startTest() {
             timesRan++
             if (timesRan >= timesToRun) {
                 timesRan = 0
-                reportAverage()
+                reportSlowest()
             } else {
                 setTimeout(function () {
                     runButton.click()
@@ -128,12 +128,11 @@ function startTest() {
             callNextStep(currentState);
         }));
 
-    function reportAverage () {
+    function reportSlowest () {
         var results = {}
         runs.forEach(function (runData) {
             for (var key in runData) {
-                results[key] = results[key] || 0
-                results[key] += runData[key].total
+                results[key] = Math.max(results[key] || 0, runData[key].total)
             }
         });
         drawChart(results);
@@ -145,7 +144,7 @@ function drawChart(results) {
     var rawData = [ [ "Project" , "Time", { role: "style"} ] ];
     for (var key in results) {
         var color = 'rgb(140, 217, 140)';
-        rawData.push([ key, Math.round(results[key] / runs.length), color ]);
+        rawData.push([ key, Math.round(results[key]), color ]);
     }
     var data = google.visualization.arrayToDataTable(rawData);
 
@@ -158,7 +157,7 @@ function drawChart(results) {
                      2]);
 
     var runWord = "run" + (runs.length > 1 ? "s" : "");
-    var title = "Average time in milliseconds over " + runs.length +
+    var title = "Worst time in milliseconds over " + runs.length +
         " " + runWord + " (lower is better)";
 
     var options = {

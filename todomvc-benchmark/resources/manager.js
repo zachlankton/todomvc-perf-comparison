@@ -141,11 +141,13 @@ function startTest() {
 
 google.load("visualization", "1", {packages:["corechart"]});
 function drawChart(results) {
-    var rawData = [ [ "Project" , "Time", { role: "style"} ] ];
+    var rawData = [];
     for (var key in results) {
         var color = 'rgb(140, 217, 140)';
         rawData.push([ key, Math.round(results[key]), color ]);
     }
+    rawData.sort(function(a, b){ return a[1] - b[1] })
+    rawData.unshift([ "Project" , "Time", { role: "style"} ])
     var data = google.visualization.arrayToDataTable(rawData);
 
     var view = new google.visualization.DataView(data);

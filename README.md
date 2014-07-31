@@ -6,6 +6,12 @@ Performance benchmarks for various TodoMVC implementations
 
 (MacBook Air, OS X 10.8, Core i5 @1.8GHz)
 
+### Overall:
+
+Mercury, Vue and Mithril are king. Elm is a close fourth. 
+
+Ember is the slowest; Angular, React and Backbone are trailing too.
+
 ### Chrome 35
 ![Chrome](Chrome.png)
 
@@ -14,3 +20,4 @@ Performance benchmarks for various TodoMVC implementations
 
 ### Safari 6.1
 ![Safari](Safari.png)
+

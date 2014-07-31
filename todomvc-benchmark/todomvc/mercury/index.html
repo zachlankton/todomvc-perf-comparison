@@ -35,8 +35,7 @@ function createApp() {
     wireUpEvents(state, events)
 
     rafListen(state, function (value) {
-		console.log("me",Math.random())
-        localStorage.setItem("todos-mercury", JSON.stringify(value))
+		localStorage.setItem("todos-mercury", JSON.stringify(value))
     })
 
     return state

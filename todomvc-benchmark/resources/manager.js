@@ -170,7 +170,8 @@ function drawChart(results) {
         legend: { position: "none" },
         backgroundColor: 'transparent',
         hAxis: {title: title},
-        min:0
+        min:0,
+        max:1500
     };
     var analysis = document.getElementById("analysis");
     analysis.style.display = 'block';

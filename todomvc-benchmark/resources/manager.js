@@ -132,7 +132,7 @@ function startTest() {
         var results = {}
         runs.forEach(function (runData) {
             for (var key in runData) {
-                results[key] = Math.max(results[key] || 0, runData[key].total)
+                results[key] = Math.min(results[key] || Infinity, runData[key].total)
             }
         });
         drawChart(results);
@@ -157,7 +157,7 @@ function drawChart(results) {
                      2]);
 
     var runWord = "run" + (runs.length > 1 ? "s" : "");
-    var title = "Worst time in milliseconds over " + runs.length +
+    var title = "Best time in milliseconds over " + runs.length +
         " " + runWord + " (lower is better)";
 
     var options = {

@@ -16,7 +16,7 @@ Suites.push({
             for (var i = 0; i < numberOfItemsToAdd; i++) {
                 var inputEvent = document.createEvent('Event');
                 inputEvent.initEvent('input', true, true);
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Mithril ------- Something to do ' + i;
                 newTodo.dispatchEvent(inputEvent);
 
                 var keydownEvent = document.createEvent('Event');
@@ -55,7 +55,7 @@ Suites.push({
                 var keyupEvent = document.createEvent('Event');
                 keyupEvent.initEvent('keyup', true, true);
                 keyupEvent.keyCode = 13;
-                app.newTodo = 'Something to do ' + i;
+                app.newTodo = 'Vue ----------- Something to do ' + i;
                 newTodo.dispatchEvent(keyupEvent)
             }
         }),
@@ -90,7 +90,7 @@ Suites.push({
                 var keypressEvent = document.createEvent('Event');
                 keypressEvent.initEvent('keypress', true, true);
                 keypressEvent.which = 13;
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Backbone ------ Something to do ' + i;
                 newTodo.dispatchEvent(keypressEvent)
             }
         }),
@@ -124,7 +124,7 @@ Suites.push({
                 var keyupEvent = document.createEvent('Event');
                 keyupEvent.initEvent('keyup', true, true);
                 keyupEvent.keyCode = 13;
-                viewModel.current('Something to do ' + i);
+                viewModel.current('Knockout ------ Something to do ' + i);
                 newTodo.dispatchEvent(keyupEvent);
             }
         }),
@@ -164,7 +164,7 @@ Suites.push({
     tests: [
         new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (params, contentWindow) {
             for (var i = 0; i < numberOfItemsToAdd; i++) {
-                params.emberRun(function () { params.views["new-todo"].set('value', 'Something to do' + i); });
+                params.emberRun(function () { params.views["new-todo"].set('value', 'Ember --------- Something to do ' + i); });
                 params.emberRun(function () {
                     var keyupEvent = document.createEvent('Event');
                     keyupEvent.initEvent('keyup', true, true);
@@ -205,7 +205,7 @@ Suites.push({
             for (var i = 0; i < numberOfItemsToAdd; i++) {
                 var inputEvent = document.createEvent('Event');
                 inputEvent.initEvent('input', true, true);
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Angular ------- Something to do ' + i;
                 newTodo.dispatchEvent(inputEvent);
                 newTodo.form.dispatchEvent(submitEvent);
             }
@@ -240,7 +240,7 @@ Suites.push({
                 var keydownEvent = document.createEvent('Event');
                 keydownEvent.initEvent('keydown', true, true);
                 keydownEvent.which = 13; // VK_ENTER
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'React --------- Something to do ' + i;
                 newTodo.dispatchEvent(keydownEvent);
             }
         }),
@@ -274,7 +274,7 @@ Suites.push({
                 var keydownEvent = document.createEvent('Event');
                 keydownEvent.initEvent('keydown', true, true);
                 keydownEvent.which = 13; // VK_ENTER
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Om.? React.8 -- Something to do ' + i;
                 newTodo.dispatchEvent(keydownEvent);
             }
         }),
@@ -308,7 +308,7 @@ Suites.push({
                 var keydownEvent = document.createEvent('Event');
                 keydownEvent.initEvent('keydown', true, true);
                 keydownEvent.which = 13; // VK_ENTER
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Om.5 React.9 -- Something to do ' + i;
                 newTodo.dispatchEvent(keydownEvent);
             }
         }),
@@ -482,11 +482,11 @@ Suites.push({
         });
     },
     tests: [
-        new BenchmarkTestStep('Elm ----------- Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
+        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
             for (var i = 0; i < numberOfItemsToAdd; i++) {
                 var inputEvent = document.createEvent('Event');
                 inputEvent.initEvent('input', true, true);
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Elm ----------- Something to do ' + i;
                 newTodo.dispatchEvent(inputEvent);
 
                 var keydownEvent = document.createEvent('Event');
@@ -521,14 +521,14 @@ Suites.push({
         });
     },
     tests: [
-        new BenchmarkTestStep('Likely.js ----- Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
+        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
             var changeEvt = document.createEvent('Event');
             changeEvt.initEvent('change', true, true);
             var keydownEvent = document.createEvent('Event');
             keydownEvent.initEvent('keydown', true, true);
             keydownEvent.which = 13;
             for (var i = 0; i < numberOfItemsToAdd; i++) {
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Likely.js ----- Something to do ' + i;
                 newTodo.dispatchEvent(changeEvt);
                 newTodo.dispatchEvent(keydownEvent);
             }

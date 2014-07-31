@@ -9,9 +9,9 @@ Performance benchmarks for various TodoMVC implementations
 
 ### Overall:
 
-Mercury, Vue and Mithril are king. Elm is a close fourth. 
+Mercury, Vue and Mithril are king. Elm is a close fourth, except on IE9 where it is very slow. 
 
-Ember is the slowest; Angular, React and Backbone are trailing too.
+Ember is the slowest overall; Angular, React and Backbone are trailing too.
 
 ### Chrome 35, OS X
 ![Chrome](Chrome.png)

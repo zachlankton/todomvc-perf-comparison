@@ -144,7 +144,8 @@ google.load("visualization", "1", {packages:["corechart"]});
 function drawChart(results) {
     var rawData = [];
     for (var key in results) {
-        var color = 'rgb(140, 217, 140)';
+        console.log("Hey "+ key)
+        var color = colorify(key);
         rawData.push([ key, Math.round(results[key]), color ]);
     }
     rawData.sort(function(a, b){ return a[1] - b[1] })
@@ -190,6 +191,14 @@ function shuffle ( ary ) {
      ary[i] = tempj;
      ary[j] = tempi;
    }
+}
+
+function colorify(n){
+    var c = 'rgb(' + ( Math.max(0,(n.toLowerCase().charCodeAt(3 % n.length) - 97) / 26 * 255 | 0) ) + 
+              ", " + ( Math.max(0,(n.toLowerCase().charCodeAt(4 % n.length) - 97) / 26 * 255 | 0) ) +
+              ", " + ( Math.max(0,(n.toLowerCase().charCodeAt(5 % n.length) - 97) / 26 * 255 | 0) ) + ")"
+    console.log(n.charCodeAt(2 % n.length), 2 % n.length, c)
+    return c
 }
 
 window.addEventListener('load', startTest);

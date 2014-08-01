@@ -13,7 +13,7 @@ Mercury, Vue and Mithril are king. Elm is a close fourth, except on IE9 where it
 
 Ember is the slowest overall; Angular, React and Backbone are trailing too.
 
-### Chrome 35, OS X
+### Chrome 36, OS X
 ![Chrome](Chrome.png)
 
 ### Firefox 31, OS X
@@ -22,7 +22,7 @@ Ember is the slowest overall; Angular, React and Backbone are trailing too.
 ### Safari 6.1, OS X
 ![Safari](Safari.png)
 
-### Chrome 35, Windows Vista
+### Chrome 36, Windows Vista
 
 ![Vista-Chrome](Vista-Chrome.png)
 

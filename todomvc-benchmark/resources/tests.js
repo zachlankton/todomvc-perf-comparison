@@ -1,4 +1,4 @@
-var numberOfItemsToAdd = 100;
+var numberOfItemsToAdd = 50;
 var Suites = [];
 
 Suites.push({
@@ -16,7 +16,7 @@ Suites.push({
             for (var i = 0; i < numberOfItemsToAdd; i++) {
                 var inputEvent = document.createEvent('Event');
                 inputEvent.initEvent('input', true, true);
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Mithril ------- Something to do ' + i;
                 newTodo.dispatchEvent(inputEvent);
 
                 var keydownEvent = document.createEvent('Event');
@@ -55,7 +55,7 @@ Suites.push({
                 var keyupEvent = document.createEvent('Event');
                 keyupEvent.initEvent('keyup', true, true);
                 keyupEvent.keyCode = 13;
-                app.newTodo = 'Something to do ' + i;
+                app.newTodo = 'Vue ----------- Something to do ' + i;
                 newTodo.dispatchEvent(keyupEvent)
             }
         }),
@@ -90,7 +90,7 @@ Suites.push({
                 var keypressEvent = document.createEvent('Event');
                 keypressEvent.initEvent('keypress', true, true);
                 keypressEvent.which = 13;
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Backbone ------ Something to do ' + i;
                 newTodo.dispatchEvent(keypressEvent)
             }
         }),
@@ -124,7 +124,7 @@ Suites.push({
                 var keyupEvent = document.createEvent('Event');
                 keyupEvent.initEvent('keyup', true, true);
                 keyupEvent.keyCode = 13;
-                viewModel.current('Something to do ' + i);
+                viewModel.current('Knockout ------ Something to do ' + i);
                 newTodo.dispatchEvent(keyupEvent);
             }
         }),
@@ -164,7 +164,7 @@ Suites.push({
     tests: [
         new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (params, contentWindow) {
             for (var i = 0; i < numberOfItemsToAdd; i++) {
-                params.emberRun(function () { params.views["new-todo"].set('value', 'Something to do' + i); });
+                params.emberRun(function () { params.views["new-todo"].set('value', 'Ember --------- Something to do ' + i); });
                 params.emberRun(function () {
                     var keyupEvent = document.createEvent('Event');
                     keyupEvent.initEvent('keyup', true, true);
@@ -205,7 +205,7 @@ Suites.push({
             for (var i = 0; i < numberOfItemsToAdd; i++) {
                 var inputEvent = document.createEvent('Event');
                 inputEvent.initEvent('input', true, true);
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Angular ------- Something to do ' + i;
                 newTodo.dispatchEvent(inputEvent);
                 newTodo.form.dispatchEvent(submitEvent);
             }
@@ -240,7 +240,7 @@ Suites.push({
                 var keydownEvent = document.createEvent('Event');
                 keydownEvent.initEvent('keydown', true, true);
                 keydownEvent.which = 13; // VK_ENTER
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'React --------- Something to do ' + i;
                 newTodo.dispatchEvent(keydownEvent);
             }
         }),
@@ -274,7 +274,7 @@ Suites.push({
                 var keydownEvent = document.createEvent('Event');
                 keydownEvent.initEvent('keydown', true, true);
                 keydownEvent.which = 13; // VK_ENTER
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Om.? React.8 -- Something to do ' + i;
                 newTodo.dispatchEvent(keydownEvent);
             }
         }),
@@ -308,7 +308,7 @@ Suites.push({
                 var keydownEvent = document.createEvent('Event');
                 keydownEvent.initEvent('keydown', true, true);
                 keydownEvent.which = 13; // VK_ENTER
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Om.5 React.9 -- Something to do ' + i;
                 newTodo.dispatchEvent(keydownEvent);
             }
         }),
@@ -341,7 +341,7 @@ Suites.push({
                 var keydownEvent = document.createEvent('Event');
                 keydownEvent.initEvent('keydown', true, true);
                 keydownEvent.which = 13; // VK_ENTER
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Ractive ------- Something to do ' + i;
                 newTodo.dispatchEvent(keydownEvent);
             }
         }),
@@ -358,42 +358,44 @@ Suites.push({
     ]
 });
 
-Suites.push({
-    name: 'Quiescent',
-    url: 'todomvc/quiescent/index.html',
-    version: '?',
-    prepare: function (runner, contentWindow, contentDocument) {
-        return runner.waitForElement('#new-todo').then(function (element) {
-            element.focus();
-            return element;
-        });
-    },
-    tests: [
-        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
-            for (var i = 0; i < numberOfItemsToAdd; i++) {
-                var inputEvent = document.createEvent('Event');
-                inputEvent.initEvent('input', true, true);
-                newTodo.value = 'Something to do ' + i;
-                newTodo.dispatchEvent(inputEvent);
+if (!navigator.userAgent.match("MSIE 9.0")) {
+    Suites.push({
+        name: 'Quiescent',
+        url: 'todomvc/quiescent/index.html',
+        version: '?',
+        prepare: function (runner, contentWindow, contentDocument) {
+            return runner.waitForElement('#new-todo').then(function (element) {
+                element.focus();
+                return element;
+            });
+        },
+        tests: [
+            new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
+                for (var i = 0; i < numberOfItemsToAdd; i++) {
+                    var inputEvent = document.createEvent('Event');
+                    inputEvent.initEvent('input', true, true);
+                    newTodo.value = 'Quiescent ----- Something to do ' + i;
+                    newTodo.dispatchEvent(inputEvent);
 
-                var keydownEvent = document.createEvent('Event');
-                keydownEvent.initEvent('keydown', true, true);
-                keydownEvent.keyCode = 13; // VK_ENTER
-                newTodo.dispatchEvent(keydownEvent);
-            }
-        }),
-        new BenchmarkTestStep('CompletingAllItems', function (newTodo, contentWindow, contentDocument) {
-            var checkboxes = contentDocument.querySelectorAll('.toggle');
-            for (var i = 0; i < checkboxes.length; i++)
-                checkboxes[i].click();
-        }),
-        new BenchmarkTestStep('DeletingAllItems', function (newTodo, contentWindow, contentDocument) {
-            var deleteButtons = contentDocument.querySelectorAll('.destroy');
-            for (var i = deleteButtons.length - 1; i > -1; i--)
-                deleteButtons[i].click();
-        })
-    ]
-});
+                    var keydownEvent = document.createEvent('Event');
+                    keydownEvent.initEvent('keydown', true, true);
+                    keydownEvent.keyCode = 13; // VK_ENTER
+                    newTodo.dispatchEvent(keydownEvent);
+                }
+            }),
+            new BenchmarkTestStep('CompletingAllItems', function (newTodo, contentWindow, contentDocument) {
+                var checkboxes = contentDocument.querySelectorAll('.toggle');
+                for (var i = 0; i < checkboxes.length; i++)
+                    checkboxes[i].click();
+            }),
+            new BenchmarkTestStep('DeletingAllItems', function (newTodo, contentWindow, contentDocument) {
+                var deleteButtons = contentDocument.querySelectorAll('.destroy');
+                for (var i = deleteButtons.length - 1; i > -1; i--)
+                    deleteButtons[i].click();
+            })
+        ]
+    });
+}
 
 Suites.push({
     name: 'Mercury',
@@ -410,7 +412,7 @@ Suites.push({
             for (var i = 0; i < numberOfItemsToAdd; i++) {
                 var inputEvent = document.createEvent('Event');
                 inputEvent.initEvent('input', true, true);
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Mercury -------- Something to do ' + i;
                 newTodo.dispatchEvent(inputEvent);
 
                 var keydownEvent = document.createEvent('Event');
@@ -447,7 +449,7 @@ Suites.push({
             for (var i = 0; i < numberOfItemsToAdd; i++) {
                 var inputEvent = document.createEvent('Event');
                 inputEvent.initEvent('input', true, true);
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Mercury (thunks) Something to do ' + i;
                 newTodo.dispatchEvent(inputEvent);
 
                 var keydownEvent = document.createEvent('Event');
@@ -484,7 +486,7 @@ Suites.push({
             for (var i = 0; i < numberOfItemsToAdd; i++) {
                 var inputEvent = document.createEvent('Event');
                 inputEvent.initEvent('input', true, true);
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Elm ----------- Something to do ' + i;
                 newTodo.dispatchEvent(inputEvent);
 
                 var keydownEvent = document.createEvent('Event');
@@ -526,7 +528,7 @@ Suites.push({
             keydownEvent.initEvent('keydown', true, true);
             keydownEvent.which = 13;
             for (var i = 0; i < numberOfItemsToAdd; i++) {
-                newTodo.value = 'Something to do ' + i;
+                newTodo.value = 'Likely.js ----- Something to do ' + i;
                 newTodo.dispatchEvent(changeEvt);
                 newTodo.dispatchEvent(keydownEvent);
             }
@@ -543,3 +545,6 @@ Suites.push({
         })
     ]
 });
+
+
+shuffle(Suites)

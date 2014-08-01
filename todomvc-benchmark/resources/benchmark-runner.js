@@ -97,8 +97,9 @@ BenchmarkRunner.prototype._waitAndWarmUp = function () {
 }
 
 // This function ought be as simple as possible. Don't even use SimplePromise.
-BenchmarkRunner.prototype._runTest = function(suite, testFunction, prepareReturnValue, callback)
+BenchmarkRunner.prototype._runTest = function(suite, test, prepareReturnValue, callback)
 {
+	var testFunction = test.run
     var now = window.performance && window.performance.now ? function () { return window.performance.now(); } : Date.now;
 
     var contentWindow = this._frame.contentWindow;
@@ -113,6 +114,16 @@ BenchmarkRunner.prototype._runTest = function(suite, testFunction, prepareReturn
     setTimeout(function () {
         setTimeout(function () {
             var endTime = now();
+			
+			//if the DOM count is wrong after a test, don't report its results
+			//numberOfItemsToAdd is a global from test.js
+			if (test.name.indexOf("Adding") > -1 || test.name.indexOf("Completing") > -1) {
+				if (contentDocument.querySelectorAll(".view").length != numberOfItemsToAdd) syncTime = startTime = endTime = NaN
+			}
+			if (test.name.indexOf("Deleting") > -1) {
+				if (contentDocument.querySelectorAll(".view").length != 0) syncTime = startTime = endTime = NaN
+			}
+			
             callback(syncTime, endTime - startTime);
         }, 0)
     }, 0);
@@ -197,7 +208,7 @@ BenchmarkRunner.prototype._runTestAndRecordResults = function (state) {
 
     var self = this;
     setTimeout(function () {
-        self._runTest(suite, test.run, self._prepareReturnValue, function (syncTime, asyncTime) {
+        self._runTest(suite, test, self._prepareReturnValue, function (syncTime, asyncTime) {
             var suiteResults = self._measuredValues[suite.name] || {tests:{}, total: 0};
             self._measuredValues[suite.name] = suiteResults;
             suiteResults.tests[test.name] = {'Sync': syncTime, 'Async': asyncTime};

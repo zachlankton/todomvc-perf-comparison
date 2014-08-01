@@ -118,10 +118,18 @@ BenchmarkRunner.prototype._runTest = function(suite, test, prepareReturnValue, c
 			//if the DOM count is wrong after a test, don't report its results
 			//numberOfItemsToAdd is a global from test.js
 			if (test.name.indexOf("Adding") > -1 || test.name.indexOf("Completing") > -1) {
-				if (contentDocument.querySelectorAll(".view").length != numberOfItemsToAdd) syncTime = startTime = endTime = NaN
+				var count = contentDocument.querySelectorAll(".view").length
+				if (count != numberOfItemsToAdd) {
+					console.error([suite.name, test.name, "expected", numberOfItemsToAdd, "got", count])
+					syncTime = startTime = endTime = NaN
+				}
 			}
 			if (test.name.indexOf("Deleting") > -1) {
-				if (contentDocument.querySelectorAll(".view").length != 0) syncTime = startTime = endTime = NaN
+				var count = contentDocument.querySelectorAll(".view").length
+				if (count != 0) {
+					console.error([suite.name, test.name, "expected", 0, "got", count])
+					syncTime = startTime = endTime = NaN
+				}
 			}
 			
             callback(syncTime, endTime - startTime);

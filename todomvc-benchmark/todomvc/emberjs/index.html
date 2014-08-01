@@ -17,13 +17,15 @@
 						<ul id="todo-list">
 							{{#each filteredTodos itemController="todo"}}
 								<li {{bind-attr class="isCompleted:completed isEditing:editing"}}>
-									{{#if isEditing}}
-										{{edit-todo class="edit" value=bufferedTitle focus-out="doneEditing" insert-newline="doneEditing" escape-press="cancelEditing"}}
-									{{else}}
-										{{input type="checkbox" class="toggle" checked=isCompleted}}
-										<label {{action "editTodo" on="doubleClick"}}>{{title}}</label>
-										<button {{action "removeTodo"}} class="destroy"></button>
-									{{/if}}
+										<div class="view">
+										{{#if isEditing}}
+											{{edit-todo class="edit" value=bufferedTitle focus-out="doneEditing" insert-newline="doneEditing" escape-press="cancelEditing"}}
+										{{else}}
+											{{input type="checkbox" class="toggle" checked=isCompleted}}
+											<label {{action "editTodo" on="doubleClick"}}>{{title}}</label>
+											<button {{action "removeTodo"}} class="destroy"></button>
+										{{/if}}
+										</div>
 									</li>
 							{{/each}}
 						</ul>

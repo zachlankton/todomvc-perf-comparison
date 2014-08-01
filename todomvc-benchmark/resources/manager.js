@@ -144,7 +144,6 @@ google.load("visualization", "1", {packages:["corechart"]});
 function drawChart(results) {
     var rawData = [];
     for (var key in results) {
-        console.log("Hey "+ key)
         var color = colorify(key);
         rawData.push([ key, Math.round(results[key]), color ]);
     }
@@ -197,7 +196,6 @@ function colorify(n){
     var c = 'rgb(' + ( Math.max(0,(n.toLowerCase().charCodeAt(3 % n.length) - 97) / 26 * 255 | 0) ) + 
               ", " + ( Math.max(0,(n.toLowerCase().charCodeAt(4 % n.length) - 97) / 26 * 255 | 0) ) +
               ", " + ( Math.max(0,(n.toLowerCase().charCodeAt(5 % n.length) - 97) / 26 * 255 | 0) ) + ")"
-    console.log(n.charCodeAt(2 % n.length), 2 % n.length, c)
     return c
 }
 

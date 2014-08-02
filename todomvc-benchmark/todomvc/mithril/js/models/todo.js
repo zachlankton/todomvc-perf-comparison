@@ -1,8 +1,24 @@
 var app = {};
 
+app.edit = {
+	task: m.prop(),
+	title: m.prop(""),
+	attach: function(task) {
+		app.edit.task(task)
+		app.edit.title(task.title())
+	},
+	save: function() {
+		app.edit.task.title(app.edit.title())
+		app.edit.task(null)
+	},
+	cancel: function() {
+		app.edit.task(null)
+	}
+}
+
 app.Todo = function(data) {
-	this.title = data.title || '';
-	this.completed = data.completed || false;
+	this.title = m.prop(data.title || '');
+	this.completed = m.prop(data.completed || false);
 };
 
 // List of Todos
@@ -16,7 +32,7 @@ app.TodoList = function() {
 		save()
 	}
 	var setStatusAt = function(index, status) {
-		items[index].completed = status
+		items[index].completed(status)
 		save()
 	}
 	var removeAt = function(index) {
@@ -25,7 +41,7 @@ app.TodoList = function() {
 	}
 	var clearCompleted = function() {
 		for (var i = 0; i < items.length; i++) {
-			if (items[i].completed)
+			if (items[i].completed())
 				items.splice(index, 1)
 		}
 		save()
@@ -34,7 +50,7 @@ app.TodoList = function() {
 		var amount = 0;
 		
 		for (var i = 0; i < items.length; i++)
-			if (items[i].completed)
+			if (items[i].completed())
 				amount++
 
 		return amount

@@ -191,5 +191,5 @@
 
 	// set up filter routing
 	/*jshint newcap:false */
-	// Router({ '/:filter': viewModel.showMode }).init();
+	Router({ '/:filter': viewModel.showMode }).init();
 }());

@@ -8,7 +8,7 @@ var container = document.getElementById('todoapp'),
 // the data structure contains the data (items) as well
 // as the data manipulation and HTML helpers
 var data = {
-	items: [],
+	items: JSON.parse(localStorage.getItem("todos-likelyjs") || "[]"),
 	newItem:'',
 	filter: 'all',
 	editItem: null,
@@ -17,11 +17,13 @@ var data = {
 			data.items.push({text:data.newItem, complete:false});
 			data.newItem = '';
 			binding.update();
+			localStorage.setItem("todos-likelyjs", JSON.stringify(data.items))
 		}
 	},
 	destroy: function(index){
 		data.items.splice(index, 1);
 		binding.update();
+		localStorage.setItem("todos-likelyjs", JSON.stringify(data.items))
 	},
 	edit: function(item, index) {
 		data.editItem = item;
@@ -86,6 +88,7 @@ var data = {
 	clearCompleted: function() {
 		data.items = data.items.filter(function(e){return !e.complete;});
 		binding.update();
+		localStorage.setItem("todos-likelyjs", JSON.stringify(data.items))
 	}
 };
 

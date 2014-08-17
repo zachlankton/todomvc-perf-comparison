@@ -1,50 +1,53 @@
-app.ENTER_KEY = 13;
-app.ESC_KEY = 27;
+var view = {}
+view.ENTER_KEY = 13;
+view.ESC_KEY = 27;
 
-app.watchInput = function(onenter, onescape) {
+view.watchInput = function(onenter, onescape) {
 	return function(e) {
-		if (e.keyCode == app.ENTER_KEY && onenter) onenter()
-		if (e.keyCode == app.ESC_KEY && onescape) onescape()
+		if (e.keyCode == view.ENTER_KEY && onenter) onenter()
+		if (e.keyCode == view.ESC_KEY && onescape) onescape()
 	}
 };
-app.focus = function(element, init) {
+view.focus = function(element, init) {
 	if (!init) element.focus()
-}
+};
 
-app.view = function(ctrl) {
+view.main = function() {
+	var checkedAll = vm.countCompletedTodos() == model.todos.length
 	return [
 		m('header#header', [
 			m('h1', 'todos'),
-			m('input#new-todo[placeholder="What needs to be done?"]', { 
-				oninput: m.withAttr('value', ctrl.title),
-				onkeypress: app.watchInput(ctrl.add),
-				value: ctrl.title()
+			m('input#new-todo[placeholder="What needs to be done?"]', {
+				oninput: m.withAttr('value', vm.title),
+				onkeypress: view.watchInput(vm.addTodo),
+				value: vm.title()
 			})
 		]),
 		m('section#main', [
-			m('input#toggle-all[type=checkbox]'),
+			m('input#toggle-all[type=checkbox]', {onclick: ctrl.bind(vm.setTodosStatus, !checkedAll), checked: checkedAll}),
 			m('ul#todo-list', [
-				ctrl.list.items.filter(ctrl.isVisible).map(function(task, index) {
-					return m('li', {class: (task.completed() ? 'completed' : '') + " " + (app.edit.task() == task ? 'editing' : '')}, [
-						app.edit.task() != task ? 
+				model.todos.filter(vm.isVisible).map(function(todo, index) {
+					return m('li', {class: (todo.completed() ? 'completed' : '') + " " + (vm.edit.todo() == todo ? 'editing' : '')}, [
+						vm.edit.todo() != todo ? 
 						m('.view', {}, [
 							m('input.toggle[type=checkbox]', {
-								onclick: m.withAttr('checked', ctrl.list.setStatusAt.bind(this, index)),
-								checked: task.completed()
+								onclick: m.withAttr('checked', ctrl.bind(vm.setTodoStatus, index)),
+								checked: todo.completed()
 							}),
-							m('label', {ondblclick: app.edit.attach.bind(this, task)}, task.title()),
-							m('button.destroy', { onclick: ctrl.list.removeAt.bind(this, index)})
+							m('label', {ondblclick: ctrl.bind(vm.edit.attach, todo)}, todo.title()),
+							m('button.destroy', { onclick: ctrl.bind(vm.removeTodo, index)})
 						]) :
 						m('input.edit', {
-							oninput: m.withAttr("value", app.edit.title),
-							onkeypress: app.watchInput(app.edit.save, app.edit.cancel),
-							value: app.edit.title(),
-							config: app.focus
+							oninput: m.withAttr("value", vm.edit.title),
+							onkeypress: view.watchInput(vm.edit.save, vm.edit.cancel),
+							onblur: vm.edit.save,
+							value: vm.edit.title(),
+							config: view.focus
 						})
 					])
 				 })
 			])
 		]),
-		ctrl.list.length == 0 ? '' : app.footer(ctrl)
+		model.todos.length == 0 ? '' : view.footer()
 	];
 };

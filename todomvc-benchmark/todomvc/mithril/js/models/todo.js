@@ -5,9 +5,9 @@ vm.filter = ""
 
 vm.addTodo = function() {
 	if (vm.title()) {
-		model.todos.push(new Todo({title: vm.title()}));
+		model.todos.push(new model.Todo({title: vm.title()}));
 		vm.title("");
-		save()
+		model.save()
 	}
 };
 
@@ -25,18 +25,18 @@ vm.setTodosStatus = function(status) {
 }
 vm.setTodoStatus = function(index, status) {
 	model.todos[index].completed(status)
-	save()
+	model.save()
 }
 vm.removeTodo = function(index) {
 	model.todos.splice(index, 1)
-	save()
+	model.save()
 }
 vm.clearCompletedTodos = function() {
 	for (var i = model.todos.length - 1; i > -1; i--) {
 		if (model.todos[i].completed())
 			model.todos.splice(i, 1)
 	}
-	save()
+	model.save()
 }
 vm.countCompletedTodos = function() {
 	var amount = 0;
@@ -58,7 +58,7 @@ vm.edit = {
 	save: function() {
 		vm.edit.todo().title(vm.edit.title())
 		vm.edit.todo(null)
-		save()
+		model.save()
 	},
 	cancel: function() {
 		vm.edit.todo(null)

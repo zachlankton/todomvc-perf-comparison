@@ -4,7 +4,7 @@ var Suites = [];
 Suites.push({
     name: 'Mithril',
     url: 'todomvc/mithril/index.html',
-    version: '0.1.19',
+    version: '0.1.20',
     prepare: function (runner, contentWindow, contentDocument) {
         return runner.waitForElement('#new-todo').then(function (element) {
             element.focus();

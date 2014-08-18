@@ -4,7 +4,7 @@ var Suites = [];
 Suites.push({
     name: 'Mithril',
     url: 'todomvc/mithril/index.html',
-    version: '0.1.20',
+    version: '0.1.19',
     prepare: function (runner, contentWindow, contentDocument) {
         return runner.waitForElement('#new-todo').then(function (element) {
             element.focus();
@@ -41,7 +41,7 @@ Suites.push({
 Suites.push({
     name: 'Vue',
     url: 'todomvc/vue/index.html',
-    version: '0.10.6',
+    version: '0.10.0',
     prepare: function (runner, contentWindow, contentDocument) {
         return runner.waitForElement('#new-todo').then(function (element) {
             element.focus();
@@ -191,7 +191,7 @@ Suites.push({
 Suites.push({
     name: 'Angular',
     url: 'todomvc/angularjs-perf/index.html',
-    version: '1.3.0-beta.18',
+    version: '1.2.14',
     prepare: function (runner, contentWindow, contentDocument) {
         return runner.waitForElement('#new-todo').then(function (element) {
             element.focus();
@@ -226,7 +226,7 @@ Suites.push({
 Suites.push({
     name: 'React',
     url: 'todomvc/react/index.html',
-    version: '0.11.1',
+    version: '0.10.0',
     prepare: function (runner, contentWindow, contentDocument) {
         contentWindow.Utils.store = function () {}
         return runner.waitForElement('#new-todo').then(function (element) {
@@ -328,7 +328,7 @@ Suites.push({
 Suites.push({
     name: 'Ractive',
     url: 'todomvc/ractive/index.html',
-    version: '0.5.5',
+    version: '0.3.9',
     prepare: function (runner, contentWindow, contentDocument) {
         return runner.waitForElement('#new-todo').then(function (element) {
             element.focus();

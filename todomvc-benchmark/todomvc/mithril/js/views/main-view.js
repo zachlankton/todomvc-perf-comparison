@@ -26,7 +26,7 @@ view.main = function() {
 		m('section#main', [
 			model.todos.length > 0 ? m('input#toggle-all[type=checkbox]', {onclick: ctrl.bind(vm.setTodosStatus, !checkedAll), checked: checkedAll}) : "",
 			m('ul#todo-list', [
-				model.todos.filter(vm.isVisible).map(function(todo, index) {
+				model.todos.filter(vm.isVisible).map(function(todo) {
 					return m('li', {class: (todo.completed() ? 'completed' : '') + " " + (vm.edit.todo() == todo ? 'editing' : '')}, [
 						vm.edit.todo() != todo ? 
 						m('.view', {}, [

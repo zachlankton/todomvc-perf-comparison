@@ -23,12 +23,12 @@ vm.isVisible = function(todo) {
 vm.setTodosStatus = function(status) {
 	for (var i = 0; i < model.todos.length; i++) vm.setTodoStatus(i, status)
 }
-vm.setTodoStatus = function(index, status) {
-	model.todos[index].completed(status)
+vm.setTodoStatus = function(todo, status) {
+	todo.completed(status)
 	model.save()
 }
-vm.removeTodo = function(index) {
-	model.todos.splice(index, 1)
+vm.removeTodo = function(todo) {
+	model.todos.splice(model.todos.indexOf(todo), 1)
 	model.save()
 }
 vm.clearCompletedTodos = function() {
@@ -60,7 +60,7 @@ vm.edit = {
 			vm.edit.todo().title(vm.edit.title())
 			vm.edit.todo(null)
 		}
-		else vm.removeTodo(model.todos.indexOf(vm.edit.todo()))
+		else vm.removeTodo(vm.edit.todo())
 		model.save()
 	},
 	cancel: function() {

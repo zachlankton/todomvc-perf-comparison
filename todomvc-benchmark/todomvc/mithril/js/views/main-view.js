@@ -31,11 +31,11 @@ view.main = function() {
 						vm.edit.todo() != todo ? 
 						m('.view', {}, [
 							m('input.toggle[type=checkbox]', {
-								onclick: m.withAttr('checked', ctrl.bind(vm.setTodoStatus, index)),
+								onclick: m.withAttr('checked', ctrl.bind(vm.setTodoStatus, todo)),
 								checked: todo.completed()
 							}),
 							m('label', {ondblclick: ctrl.bind(vm.edit.attach, todo)}, todo.title()),
-							m('button.destroy', { onclick: ctrl.bind(vm.removeTodo, index)})
+							m('button.destroy', { onclick: ctrl.bind(vm.removeTodo, todo)})
 						]) :
 						m('input.edit', {
 							oninput: m.withAttr("value", vm.edit.title),

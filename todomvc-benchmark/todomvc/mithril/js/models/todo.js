@@ -56,8 +56,11 @@ vm.edit = {
 		vm.edit.title(todo.title())
 	},
 	save: function() {
-		vm.edit.todo().title(vm.edit.title())
-		vm.edit.todo(null)
+		if (vm.edit.title() != "") {
+			vm.edit.todo().title(vm.edit.title())
+			vm.edit.todo(null)
+		}
+		else vm.removeTodo(model.todos.indexOf(vm.edit.todo()))
 		model.save()
 	},
 	cancel: function() {

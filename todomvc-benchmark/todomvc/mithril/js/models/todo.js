@@ -21,7 +21,7 @@ vm.isVisible = function(todo) {
 }
 
 vm.setTodosStatus = function(status) {
-	for (var i = 0; i < model.todos.length; i++) vm.setTodoStatus(i, status)
+	for (var i = 0; i < model.todos.length; i++) vm.setTodoStatus(model.todos[i], status)
 }
 vm.setTodoStatus = function(todo, status) {
 	todo.completed(status)

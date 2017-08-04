@@ -6,7 +6,7 @@ Suites.push({
     url: 'todomvc/domDataMirror/index.html',
     version: '0.1.21',
     prepare: function (runner, contentWindow, contentDocument) {
-        return runner.waitForElement('#new-todo').then(function (element) {
+        return runner.waitForElement('.new-todo').then(function (element) {
             element.focus();
             return element;
         });

@@ -7,7 +7,6 @@
 		<link rel="stylesheet" href="css/base.css">
 		<link rel="stylesheet" href="css/index.css">
 		<script src="js/dData.js"></script> <!-- DOM Data Mirror -->
-		<script> function todoComputer(dData){ return dData.value.todo; } </script>
 	</head>
 	<body>
 		<section d-data name="TodoList" class="todoapp">
@@ -15,49 +14,33 @@
 				<h1>todos</h1>
 				<input onkeyup="todo.add(event)" class="new-todo" placeholder="What needs to be done?" autofocus>
 			</header>
-			<!-- This section should be hidden by default and shown when there are todos -->
-			<section class="main" show="todo.hasTodoItems">
+			<section class="main" >
 				<input onclick="todo.toggleAll()" id="toggle-all" class="toggle-all" type="checkbox">
 				<label for="toggle-all">Mark all as complete</label>
 				<input filter="TodoItem:completed" type="hidden" id="filter">
 				<ul class="todo-list">
-					<!-- These are here just to show the structure of the list items -->
-					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-					<li d-data name="TodoItem" dClass="completed:completed:true">
+					<li d-data name="TodoItem">
 						<div class="view">
 							<input name="completed" class="toggle" type="checkbox" onclick="todo.toggleComplete(event)">
-							<label 	ondblclick="todo.edit(event)"
-									name="todo">Taste JavaScript</label>
+							<label 	ondblclick="todo.edit(event)" name="todo"></label>
 							<button class="destroy" onclick="todo.remove(event)"></button>
 						</div>
-						<input 	onblur="todo.update(event)" 
-								onkeyup="todo.update(event)" 
-								class="edit">
+						<input 	onblur="todo.update(event)" onkeyup="todo.update(event)" class="edit">
 					</li>
 				</ul>
 			</section>
-			<!-- This footer should hidden by default and shown when there are todos -->
-			<footer class="footer" show="todo.hasTodoItems">
-				<!-- This should be `0 items left` by default -->
+			<footer class="footer" >
 				<span class="todo-count">
 					<strong name="itemsLeft">0</strong> 
-					item<span show="todo.showSingle">s</span> left
+					item<span class="plural">s</span> left
 				</span>
 				<input type="hidden" name="itemsCompleted" >
-				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
-					<li>
-						<a class="selected" href="#/">All</a>
-					</li>
-					<li>
-						<a href="#/active">Active</a>
-					</li>
-					<li>
-						<a href="#/completed">Completed</a>
-					</li>
+					<li><a class="selected" href="#/">All</a></li>
+					<li><a href="#/active">Active</a></li>
+					<li><a href="#/completed">Completed</a></li>
 				</ul>
-				<!-- Hidden if no completed items are left ↓ -->
-				<button show="todo.showClear" onclick="todo.clearComplete()" class="clear-completed">Clear completed</button>
+				<button onclick="todo.clearComplete()" class="clear-completed">Clear completed</button>
 			</footer>
 		</section>
 		<footer class="info">
@@ -66,6 +49,6 @@
 			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
 		</footer>
 		<script src="js/base.js"></script>
-		<script src="js/app.js"></script>
+		<script src="js/app2.js"></script>
 	</body>
 </html>

@@ -2,7 +2,7 @@ var numberOfItemsToAdd = 50;
 var Suites = [];
 
 Suites.push({
-    name: 'DOM Data Mirror',
+    name: 'dData',
     url: 'todomvc/domDataMirror/index.html',
     version: '0.1.21',
     prepare: function (runner, contentWindow, contentDocument) {
@@ -20,8 +20,8 @@ Suites.push({
                 newTodo.dispatchEvent(inputEvent);
 
                 var keydownEvent = document.createEvent('Event');
-                keydownEvent.initEvent('keypress', true, true);
-                keydownEvent.keyCode = 13; // VK_ENTER
+                keydownEvent.initEvent('keyup', true, true);
+                keydownEvent.key = "Enter"; // VK_ENTER
                 newTodo.dispatchEvent(keydownEvent);
             }
         }),
@@ -37,6 +37,46 @@ Suites.push({
         })
     ]
 });
+
+
+Suites.push({
+    name: 'dData (Optimized)',
+    url: 'todomvc/domDataMirror/index2.html',
+    version: '0.1.21',
+    prepare: function (runner, contentWindow, contentDocument) {
+        return runner.waitForElement('.new-todo').then(function (element) {
+            element.focus();
+            return element;
+        });
+    },
+    tests: [
+        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
+            for (var i = 0; i < numberOfItemsToAdd; i++) {
+                var inputEvent = document.createEvent('Event');
+                inputEvent.initEvent('input', true, true);
+                newTodo.value = 'dData ------- Something to do ' + i;
+                newTodo.dispatchEvent(inputEvent);
+
+                var keydownEvent = document.createEvent('Event');
+                keydownEvent.initEvent('keyup', true, true);
+                keydownEvent.key = "Enter"; // VK_ENTER
+                newTodo.dispatchEvent(keydownEvent);
+            }
+        }),
+        new BenchmarkTestStep('CompletingAllItems', function (newTodo, contentWindow, contentDocument) {
+            var checkboxes = contentDocument.querySelectorAll('.toggle');
+            for (var i = 0; i < checkboxes.length; i++)
+                checkboxes[i].click();
+        }),
+        new BenchmarkTestStep('DeletingAllItems', function (newTodo, contentWindow, contentDocument) {
+            var deleteButtons = contentDocument.querySelectorAll('.destroy');
+            for (var i = deleteButtons.length - 1; i > -1; i--)
+                deleteButtons[i].click();
+        })
+    ]
+});
+
+
 
 Suites.push({
     name: 'Mithril',
@@ -178,52 +218,7 @@ Suites.push({
     ]
 });
 
-Suites.push({
-    name: 'Ember',
-    url: 'todomvc/emberjs/index.html',
-    version: '1.4.0 + Handlebars 1.3.0',
-    prepare: function (runner, contentWindow, contentDocument) {
-        contentWindow.Todos.Store = contentWindow.DS.Store.extend({
-            revision: 12,
-            adapter: 'Todos.LSAdapter',
-            commit: function () { }
-        });
 
-        return runner.waitForElement('#new-todo').then(function (element) {
-            element.focus();
-            return {
-                newTodo: element,
-                views: contentWindow.Ember.View.views,
-                emberRun: contentWindow.Ember.run
-            }
-        });
-    },
-    tests: [
-        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (params, contentWindow) {
-            for (var i = 0; i < numberOfItemsToAdd; i++) {
-                params.emberRun(function () { params.views["new-todo"].set('value', 'Ember --------- Something to do ' + i); });
-                params.emberRun(function () {
-                    var keyupEvent = document.createEvent('Event');
-                    keyupEvent.initEvent('keyup', true, true);
-                    keyupEvent.keyCode = 13;
-                    params.newTodo.dispatchEvent(keyupEvent)
-                });
-            }
-        }),
-        new BenchmarkTestStep('CompletingAllItems', function (params, contentWindow, contentDocument) {
-            var checkboxes = contentDocument.querySelectorAll('.ember-checkbox');
-            for (var i = 0; i < checkboxes.length; i++) {
-                var view = params.views[checkboxes[i].id];
-                params.emberRun(function () { view.set('checked', true); });
-            }
-        }),
-        new BenchmarkTestStep('DeletingItems', function (params, contentWindow, contentDocument) {
-            var deleteButtons = contentDocument.querySelectorAll('.destroy');
-            for (var i = deleteButtons.length - 1; i > -1; i--)
-                params.emberRun(function () { deleteButtons[i].click(); });
-        })
-    ]
-});
 
 Suites.push({
     name: 'Angular',
@@ -529,44 +524,6 @@ Suites.push({
                 var keydownEvent = document.createEvent('Event');
                 keydownEvent.initEvent('keydown', true, true);
                 keydownEvent.keyCode = 13; // VK_ENTER
-                newTodo.dispatchEvent(keydownEvent);
-            }
-        }),
-        new BenchmarkTestStep('CompletingAllItems', function (newTodo, contentWindow, contentDocument) {
-            var checkboxes = contentDocument.querySelectorAll('.toggle');
-            for (var i = 0; i < checkboxes.length; i++)
-                checkboxes[i].click();
-        }),
-        new BenchmarkTestStep('DeletingAllItems', function (newTodo, contentWindow, contentDocument) {
-            var deleteButtons = contentDocument.querySelectorAll('.destroy');
-            for (var i = deleteButtons.length - 1; i > -1; i--)
-                deleteButtons[i].click();
-        })
-    ]
-});
-
-Suites.push({
-    name: 'Likely.js',
-    url: 'todomvc/likelyjs/index.html',
-    version: '0.9.1',
-    prepare: function (runner, contentWindow, contentDocument) {
-        //contentWindow.likely.sync = function () {}
-        contentWindow.data.items = [];
-        return runner.waitForElement('#new-todo').then(function (element) {
-            element.focus();
-            return element;
-        });
-    },
-    tests: [
-        new BenchmarkTestStep('Adding' + numberOfItemsToAdd + 'Items', function (newTodo, contentWindow, contentDocument) {
-            var changeEvt = document.createEvent('Event');
-            changeEvt.initEvent('change', true, true);
-            var keydownEvent = document.createEvent('Event');
-            keydownEvent.initEvent('keydown', true, true);
-            keydownEvent.which = 13;
-            for (var i = 0; i < numberOfItemsToAdd; i++) {
-                newTodo.value = 'Likely.js ----- Something to do ' + i;
-                newTodo.dispatchEvent(changeEvt);
                 newTodo.dispatchEvent(keydownEvent);
             }
         }),

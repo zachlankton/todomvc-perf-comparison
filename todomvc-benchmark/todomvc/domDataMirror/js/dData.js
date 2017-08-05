@@ -124,7 +124,6 @@ function registerDData(dDataProto){
 
         // dispatch dDataRendered Event for Builtins to respond to
         emitDataRendered(dDataProto);
-
     };
 
     function emitDataRendered(element){
@@ -226,7 +225,9 @@ function registerDData(dDataProto){
     }
 
     function removeSibling() {
-        dDataProto.parentElement.removeChild(dDataProto);
+        var parent = dDataProto.parentElement;
+        parent.removeChild(dDataProto);
+        emitDataRendered(parent);
     }
 
     function getLastSibling(parent, name){
@@ -287,8 +288,8 @@ function registerDData(dDataProto){
     function getNestedDData(data, child, getElementTree){
         if (data[child.getAttribute("name")] == undefined){
             data[child.getAttribute("name")] = [];
-            data[child.getAttribute("name")].add = function(zChild, data){
-                child.add(zChild, data);
+            data[child.getAttribute("name")].add = function(data){
+                child.add(null, data);
             };
             data[child.getAttribute("name")].remove = function(index){
                 child.parentElement.querySelectorAll("[name='"+child.getAttribute("name")+"']")[index].remove();
@@ -331,18 +332,19 @@ function registerDData(dDataProto){
         // extensions provide additional functionality when a given attribute is present on 
         // any descendant element of d-data, these attributes can be custom or native
         // multiple extensions for the same attribute may be possible, but collisions may occur, this has not been tested
+        evaluateElementForExtensions(element, dDataElement);
         var children = element.children;
         for (var i=0; i<children.length; i++){
             var child = children[i];
             if (child.hasAttribute("d-data")){  //then descend no further  
             }else{
-                evaluteElementForExtensions(child, dDataElement);
+                evaluateElementForExtensions(child, dDataElement);
                 setupExtensions(child, dDataElement); //continue looking through immediate children
             }
         }
     }
 
-    function evaluteElementForExtensions(element, ddata){
+    function evaluateElementForExtensions(element, ddata){
         // extension objects = {attribute: "attribute name", setup: function(element, dData, attributeValue) }
         var ext = dData.extensions
         for (var i=0; i<ext.length; i++){
@@ -389,18 +391,6 @@ dDataObserver.observe(document, {
 });
 
 // EXTENSIONS:
-
-// REMOVE ITEM EXTENSION
-
-( function dDataChildRemoverExtension(){
-    dData.extensions.push({attribute: "remove", setup: setupRemover });
-
-    function setupRemover(element, dData, attrVal){
-        element.addEventListener("click", function(event){
-            dData.remove();
-        })
-    }
-})();
 
 /////////////////////////////////
 // COMPUTED PROPERTY EXTENSION //
@@ -459,13 +449,14 @@ dDataObserver.observe(document, {
 
 ( function dDataFilterExtension(){
 
-    dData.extensions.push({attribute: "filter", setup: setupFilter})
+    dData.extensions.push({attribute: "filter", setup: setupFilter});
 
-    function setupFilter(filter, dDataElement){
+    function setupFilter(filter, dDataElement, attrVal){
         
         filter.addEventListener("keyup", function(event){
-            var dataToFilter = filter.getAttribute('filter').split(":")[0];
-            var keyToFilterOn = filter.getAttribute('filter').split(":")[1];
+            var attrSplit = attrVal.split(":");
+            var dataToFilter = attrSplit[0];
+            var keyToFilterOn = attrSplit[1];
 
             var searchKeys = filter.value.split(" ");
             var parent = dData.findNearestDDataParent(filter);
@@ -512,6 +503,62 @@ dDataObserver.observe(document, {
             if (results.length == 0 || results == false) {break;}
         }
         return results;
+    }
+
+})();
+
+///////////
+// CLASS //
+///////////
+
+( function(){
+    
+    dData.extensions.push({attribute: "dClass", setup: setupDClass});
+
+    function setupDClass(element, dDataElement, attrVal){
+        var attrSplit = attrVal.split(":");
+        var className = attrSplit[0];
+        var name = attrSplit[1];
+        var expression = attrSplit[2];
+        dDataElement.valueElementTree[name].addEventListener("change", dClass);
+        document.addEventListener("dDataRendered", dClass);
+
+        function dClass(event){
+            if (dDataElement.value[name].toString() == expression ){
+                element.classList.add(className);
+            }else{
+                element.classList.remove(className);
+            }
+            document.removeEventListener("dDataRendered", dClass);
+        }
+
+    }
+
+})();
+
+//////////
+// SHOW //
+//////////
+
+(function(){
+
+    dData.extensions.push({attribute: "show", setup: setupShow});
+
+    function setupShow(element, dDataElement, attrVal){
+
+        document.addEventListener("dDataRendered", showHide);
+        dDataElement.addEventListener("change", showHide);
+
+        function showHide(){
+            var attrSplit = attrVal.split(".");
+            var func = window;
+            var i=0;
+            while (typeof(func) != "function" ){
+                func = func[attrSplit[i]];
+                i++;
+            }
+            element.hidden = func(); 
+        }
     }
 
 })();
